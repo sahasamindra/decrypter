@@ -1,0 +1,7 @@
+{
+  "name": "decrypter",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

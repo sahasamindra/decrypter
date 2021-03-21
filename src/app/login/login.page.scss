@@ -1,0 +1,27 @@
+.form, .image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.image{
+    width: 50%;
+    margin-top: 14vh;
+    margin-bottom: 10vh;
+}
+
+.form{
+    width: 60%;
+}
+
+.form, ion-button{
+    margin-top: 3vh;
+}
+
+ion-input{
+    text-align: center;
+    border: 2px solid rgb(86, 3, 134);
+    border-radius: 10px;
+    letter-spacing: 5px;
+    // box-shadow: 0.3px 0.3px 20px 2px red;
+}

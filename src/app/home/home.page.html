@@ -1,20 +1,32 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+<!-- <ion-content [fullscreen]="true"> -->
+<ion-content>
+  <div class="image" (click)="history()">
+    <img src="assets/lock.svg" width="auto" height="auto">
   </div>
+
+  <div class="form">
+    <form [formGroup]="myForm" (ngSubmit)="decrypt()">
+      <ion-input #input1 formControlName="encodedText" placeholder="encoded hash" (ionFocus)="setBorderColor(input1)"
+        (ionBlur)="resetBorderColor(input1)"></ion-input>
+      <ion-input #input2 formControlName="reference" placeholder="reference" (ionFocus)="setBorderColor(input2)"
+        (ionBlur)="resetBorderColor(input2)"></ion-input>
+        <ion-row *ngIf="myForm.valid">
+          <ion-col class="ion-text-right">
+            <ion-button type="submit" shape="round" color="success">Decrypt</ion-button>
+          </ion-col>
+        </ion-row>  
+    </form>
+  </div>
+
+  <ion-card *ngIf="showMyCard">
+    <ion-img src="assets/binary.svg"></ion-img>
+    <ion-card-header>
+      <ion-card-title>{{remainingTime}}</ion-card-title>
+      <ion-card-subtitle>{{today}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      Following item has been found based on your data: <br>
+      <h2>{{decodedData}}</h2>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

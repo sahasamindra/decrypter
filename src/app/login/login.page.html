@@ -1,0 +1,26 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<!-- <ion-content [fullscreen]="true"> -->
+<ion-content>
+  <div>
+    <p>
+      this is encrypted text: {{encrytedText}} <br>
+      this is decrypted text: {{decryptedtext}} <br>
+      this is original text: {{plaintext}}
+    </p>
+  </div>
+  <div class="image">
+    <img src="assets/logo.svg" width="auto" height="auto">
+  </div>
+
+  <div class="form">
+    <form [formGroup]="myForm" (ngSubmit)="validateForm()">
+      <ion-input #input formControlName="password" placeholder="password" type="password" (ionFocus)="setBorderColor(input)" (ionBlur)="resetBorderColor(input)"></ion-input>
+      <ion-button *ngIf="myForm.valid" type="submit" shape="round" color="success" expand="block">Verify</ion-button>
+    </form>
+  </div>
+</ion-content>

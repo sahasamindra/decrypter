@@ -8,13 +8,15 @@
     <form [formGroup]="myForm" (ngSubmit)="decrypt()">
       <ion-input #input1 formControlName="encodedText" placeholder="encoded hash" (ionFocus)="setBorderColor(input1)"
         (ionBlur)="resetBorderColor(input1)"></ion-input>
-      <ion-input #input2 formControlName="reference" placeholder="reference" (ionFocus)="setBorderColor(input2)"
+      <ion-input #input2 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input2)"
         (ionBlur)="resetBorderColor(input2)"></ion-input>
-        <ion-row *ngIf="myForm.valid">
-          <ion-col class="ion-text-right">
-            <ion-button type="submit" shape="round" color="success">Decrypt</ion-button>
-          </ion-col>
-        </ion-row>  
+      <ion-input #input3 formControlName="reference" placeholder="reference" (ionFocus)="setBorderColor(input3)"
+        (ionBlur)="resetBorderColor(input3)"></ion-input>
+      <ion-row class="form-submit-button" *ngIf="myForm.valid">
+        <ion-col class="ion-text-right">
+          <ion-button type="submit" shape="round" color="success">Decrypt</ion-button>
+        </ion-col>
+      </ion-row>
     </form>
   </div>
 
@@ -29,4 +31,28 @@
       <h2>{{decodedData}}</h2>
     </ion-card-content>
   </ion-card>
+
+  <ion-row class="option-button">
+    <ion-col>
+      <ion-button #btn type="button" expand="block" color="success" color="light" (click)="showAddForm(btn)">{{buttonText}}
+      </ion-button>
+    </ion-col>
+    <ion-col class="ion-text-right">
+      <ion-button type="button" expand="block" color="success" color="light" [routerLink]="['/list']">View</ion-button>
+    </ion-col>
+  </ion-row>
+
+  <div class="form" *ngIf="displayAddForm">
+    <form [formGroup]="addForm" (ngSubmit)="encrypt()">
+      <ion-input #input4 formControlName="plainText" placeholder="plain text" (ionFocus)="setBorderColor(input4)"
+        (ionBlur)="resetBorderColor(input4)"></ion-input>
+      <ion-input #input5 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input5)"
+        (ionBlur)="resetBorderColor(input5)"></ion-input>
+      <ion-row class="form-submit-button" *ngIf="addForm.valid">
+        <ion-col class="ion-text-right">
+          <ion-button type="submit" shape="round" color="success">Encrypt</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
 </ion-content>

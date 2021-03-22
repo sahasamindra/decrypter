@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
+import CryptoJS from 'crypto-js';
 const { Storage } = Plugins;
 
 @Component({
@@ -10,18 +11,49 @@ const { Storage } = Plugins;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  encryptedAES;
+  decryptedBytes;
+  plaintext;
+  encrytedText;
+  decryptedtext;
 
   today = '';
   decodedData = '';
   remainingTime = 5;
   showMyCard: boolean = false;
+  displayAddForm: boolean = false;
   myForm: FormGroup;
+  addForm: FormGroup;
+  buttonText = 'Add';
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.myForm = this.fb.group({
       encodedText: ['', Validators.required],
-      reference: ['', [Validators.required, Validators.minLength(4)]]
+      reference: ['', [Validators.required, Validators.minLength(4)]],
+      key: ['', [Validators.required, Validators.minLength(4)]]
     });
+
+    this.addForm = this.fb.group({
+      plainText: ['', Validators.required],
+      key: ['', [Validators.required, Validators.minLength(4)]]
+    });
+  }
+
+  encrypt() {
+    console.log(this.addForm.value);
+
+    this.encryptedAES = CryptoJS.AES.encrypt(this.addForm.value.plainText, this.addForm.value.key);
+    this.decryptedBytes = CryptoJS.AES.decrypt(this.encryptedAES, this.addForm.value.key);
+    this.encrytedText = this.encryptedAES.toString();
+    this.decryptedtext = this.decryptedBytes.toString();
+
+    this.plaintext = this.decryptedBytes.toString(CryptoJS.enc.Utf8);
+    console.log('this is encrypted text: ', this.encrytedText);
+    console.log('this is decrypted text: ', this.decryptedtext);
+    console.log('this is original text: ', this.plaintext);
+
+    this.addForm.reset();
+
   }
 
   decrypt() {
@@ -45,6 +77,18 @@ export class HomePage {
         clearInterval(interval);
       }
     }, 1000);
+  }
+
+  showAddForm(item) {
+    if (this.displayAddForm == false) {
+      this.displayAddForm = true;
+      this.buttonText = 'Cancel'
+      item.el.color = 'danger'
+    } else {
+      this.displayAddForm = false;
+      this.buttonText = 'Add'
+      item.el.color = 'light'
+    }
   }
 
   async setObject(key, time, reference, encodedText) {

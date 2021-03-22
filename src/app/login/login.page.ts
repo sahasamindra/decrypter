@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
-import CryptoJS from 'crypto-js';
 
 
 @Component({
@@ -11,29 +10,12 @@ import CryptoJS from 'crypto-js';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  encryptedAES; 
-  decryptedBytes; 
-  plaintext;
-  encrytedText;
-  decryptedtext;
-
+  
   myForm: FormGroup;
   constructor(private fb: FormBuilder, private router: Router) {
-    this.algo();
     this.myForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(10)]]
     });
-  }
-
-  algo() {
-    this.encryptedAES = CryptoJS.AES.encrypt("thisIs@myPassword", "safwan");
-    this.decryptedBytes = CryptoJS.AES.decrypt(this.encryptedAES, "safwan");
-    this.plaintext = this.decryptedBytes.toString(CryptoJS.enc.Utf8);
-    this.encrytedText = this.encryptedAES.toString();
-    this.decryptedtext = this.decryptedBytes.toString();
-    console.log('this is encrypted text: ', this.encrytedText);
-    console.log('this is decrypted text: ', this.decryptedtext);
-    console.log('this is original text: ', this.plaintext);
   }
 
   ngOnInit() {

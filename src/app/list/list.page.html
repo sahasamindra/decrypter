@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Current Data</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <ion-list>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>Item</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="deleteItem(item)">Delete</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>Item</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="deleteItem(item)">Delete</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list> -->
+
+  <ion-list>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>
+          <h2>HubStruck Notifications</h2>
+          <p>A new message in your network</p>
+          <p>Oceanic Next has joined your network</p>
+        </ion-label>
+        <ion-note slot="end">
+          10:45 AM
+        </ion-note>
+      </ion-item>
+
+      <ion-item-options side="start">
+        <ion-item-option color="light" (click)="edit(item)">
+          <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="delete(item)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

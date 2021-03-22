@@ -11,20 +11,17 @@ const { Storage } = Plugins;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  encryptedAES;
-  decryptedBytes;
-  plaintext;
-  encrytedText;
-  decryptedtext;
 
   today = '';
   decodedData = '';
+  buttonText = 'Add';
   remainingTime = 5;
+
   showMyCard: boolean = false;
   displayAddForm: boolean = false;
+
   myForm: FormGroup;
   addForm: FormGroup;
-  buttonText = 'Add';
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.myForm = this.fb.group({
@@ -39,44 +36,42 @@ export class HomePage {
     });
   }
 
-  encrypt() {
-    console.log(this.addForm.value);
-
-    this.encryptedAES = CryptoJS.AES.encrypt(this.addForm.value.plainText, this.addForm.value.key);
-    this.decryptedBytes = CryptoJS.AES.decrypt(this.encryptedAES, this.addForm.value.key);
-    this.encrytedText = this.encryptedAES.toString();
-    this.decryptedtext = this.decryptedBytes.toString();
-
-    this.plaintext = this.decryptedBytes.toString(CryptoJS.enc.Utf8);
-    console.log('this is encrypted text: ', this.encrytedText);
-    console.log('this is decrypted text: ', this.decryptedtext);
-    console.log('this is original text: ', this.plaintext);
-
+  encrypt(btn) {
+    let encryptedAES = CryptoJS.AES.encrypt(this.addForm.value.plainText, this.addForm.value.key);
     this.addForm.reset();
 
+    let storageKey = this.generateKey('_new');
+    this.setObject(storageKey, this.today, '_new', encryptedAES.toString())
+      .then(() => {
+        this.displayAddForm = true;
+        this.showAddForm(btn);
+      });
   }
 
   decrypt() {
-    let today = new Date();
     let reference = this.myForm.value.reference;
     let encodedData = this.myForm.value.encodedText;
+    let myKey = this.myForm.value.key;
     this.myForm.reset();
+    let storageKey = this.generateKey(reference);
 
-    this.today = today.toLocaleDateString() + ' ' + today.toLocaleTimeString();
-    let key = this.generateKey(reference, today);
-    this.decodedData = atob(encodedData);
-    this.showMyCard = true;
+    let decryptedBytes = CryptoJS.AES.decrypt(encodedData, myKey);
+    this.decodedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 
-    this.setObject(key, this.today, reference, encodedData);
-
-    let interval = setInterval(() => {
-      this.remainingTime--;
-      if (this.remainingTime == 0) {
-        this.showMyCard = false;
-        this.remainingTime = 5;
-        clearInterval(interval);
-      }
-    }, 1000);
+    if (this.decodedData == '' || this.decodedData == null) {
+      console.log("acces denied animation and border blinking animation 3 times");
+    } else {
+      this.showMyCard = true;
+      this.setObject(storageKey, this.today, reference, encodedData);
+      let interval = setInterval(() => {
+        this.remainingTime--;
+        if (this.remainingTime == 0) {
+          this.showMyCard = false;
+          this.remainingTime = 5;
+          clearInterval(interval);
+        }
+      }, 1000);
+    }
   }
 
   showAddForm(item) {
@@ -91,19 +86,20 @@ export class HomePage {
     }
   }
 
-  async setObject(key, time, reference, encodedText) {
+  async setObject(storageKey, time, reference, encodedText) {
     await Storage.set({
-      key: key,
+      key: storageKey,
       value: JSON.stringify({
         time: time,
         reference: reference,
         encodedText: encodedText
       })
-    });
+    }).then(() => console.log("success toast")).catch(() => console.log("error toast"));
   }
 
-  generateKey(ref, date) {
-    // let date = new Date();
+  generateKey(ref) {
+    let date = new Date();
+    this.today = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
     let key = date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds();
     ref = ref.replace(/\s/g, '');
     key = key + ref.substr(-4);

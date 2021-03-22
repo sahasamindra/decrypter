@@ -28,17 +28,16 @@
     </ion-item-sliding>
   </ion-list> -->
 
-  <ion-list>
+  <ion-list *ngFor="let item of allItem">
     <ion-item-sliding>
       <ion-item>
         <ion-label>
-          <h2>HubStruck Notifications</h2>
-          <p>A new message in your network</p>
-          <p>Oceanic Next has joined your network</p>
+          <h2>{{item.time}}</h2>
+          <p>{{item.encodedText}}</p>
         </ion-label>
-        <ion-note slot="end">
+        <!-- <ion-note slot="end">
           10:45 AM
-        </ion-note>
+        </ion-note> -->
       </ion-item>
 
       <ion-item-options side="start">

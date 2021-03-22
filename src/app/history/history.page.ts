@@ -27,6 +27,7 @@ export class HistoryPage implements OnInit {
   async getObject(key) {
     const ret = await Storage.get({ key: key });
     const user = JSON.parse(ret.value);
+    user.key = key;
     this.cardElement.push(user);
   
     // console.log(this.cardElement);

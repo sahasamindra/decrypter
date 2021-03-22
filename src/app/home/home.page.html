@@ -43,14 +43,14 @@
   </ion-row>
 
   <div class="form" *ngIf="displayAddForm">
-    <form [formGroup]="addForm" (ngSubmit)="encrypt()">
+    <form [formGroup]="addForm" (ngSubmit)="encrypt(btn)">
       <ion-input #input4 formControlName="plainText" placeholder="plain text" (ionFocus)="setBorderColor(input4)"
         (ionBlur)="resetBorderColor(input4)"></ion-input>
       <ion-input #input5 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input5)"
         (ionBlur)="resetBorderColor(input5)"></ion-input>
       <ion-row class="form-submit-button" *ngIf="addForm.valid">
         <ion-col class="ion-text-right">
-          <ion-button type="submit" shape="round" color="success">Encrypt</ion-button>
+          <ion-button type="submit" shape="round" color="success">Save</ion-button>
         </ion-col>
       </ion-row>
     </form>

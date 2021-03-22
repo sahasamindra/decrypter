@@ -27,10 +27,12 @@ export class LoginPage implements OnInit {
   }
 
   validateForm() {
-    console.log(this.myForm.value.password);
+    // console.log(this.myForm.value.password);
     if (this.myForm.value.password == "sahasamindra5546") {
       this.myForm.reset();
       this.router.navigate(['/home']);
+    } else {
+      console.log("acces denied animation and border blinking animation 3 times");
     }
   }
 

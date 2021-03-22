@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import CryptoJS from 'crypto-js';
+import { ToastService } from '../services/toast.service';
 const { Storage } = Plugins;
 
 @Component({
@@ -23,7 +24,7 @@ export class HomePage {
   myForm: FormGroup;
   addForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private toast: ToastService) {
     this.myForm = this.fb.group({
       encodedText: ['', Validators.required],
       reference: ['', [Validators.required, Validators.minLength(4)]],
@@ -59,7 +60,7 @@ export class HomePage {
     this.decodedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 
     if (this.decodedData == '' || this.decodedData == null) {
-      console.log("acces denied animation and border blinking animation 3 times");
+      console.log("access denied animation and border blinking animation 3 times");
     } else {
       this.showMyCard = true;
       this.setObject(storageKey, this.today, reference, encodedData);
@@ -94,7 +95,9 @@ export class HomePage {
         reference: reference,
         encodedText: encodedText
       })
-    }).then(() => console.log("success toast")).catch(() => console.log("error toast"));
+    }).then(() => {
+      if (reference == '_new') this.toast.presentToast('new data successfully created', 3000, 'top', 'toast-success-class', 'checkmark-outline');
+    }).catch(() => this.toast.presentToast('operation failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
   }
 
   generateKey(ref) {
@@ -107,7 +110,6 @@ export class HomePage {
   }
 
   setBorderColor(item) {
-    // console.log(item.el);
     item.el.style.border = "2px solid red";
     item.el.style.boxShadow = "0.3px 0.3px 20px -2px red";
   }

@@ -76,6 +76,16 @@
   --ion-color-light-tint: #f5f6f9;
 }
 
+.toast-success-class {   
+  --background:#2fdf75;
+  --color:#ffffff;
+}
+
+.toast-failed-class {   
+  --background:#ff4961;
+  --color:#ffffff;
+}
+
 @media (prefers-color-scheme: dark) {
   /*
    * Dark Colors

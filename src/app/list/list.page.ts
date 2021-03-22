@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Plugins } from '@capacitor/core';
+import { ToastService } from '../services/toast.service';
 const { Storage } = Plugins;
 
 @Component({
@@ -11,7 +12,7 @@ export class ListPage implements OnInit {
 
   allItem = [];
 
-  constructor() {
+  constructor(private toast: ToastService) {
     this.getkeys();
   }
 
@@ -42,17 +43,17 @@ export class ListPage implements OnInit {
 
   async removeItem(key) {
     await Storage.remove({ key: key })
-      .then(() => console.log("delete success toast"))
-      .catch(() => console.log("delete failed toast"));
+      .then(() => this.toast.presentToast('delete success', 2000, 'top', 'toast-success-class', 'checkmark-outline'))
+      .catch(() => this.toast.presentToast('operation failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
   }
 
   edit(item) {
-    console.log('edit');
     console.log(item);
   }
 
   delete(item) {
     console.log('alert prompt for delete');
+
     this.removeItem(item.key).then(() => {
       this.allItem = [];
       this.getkeys();

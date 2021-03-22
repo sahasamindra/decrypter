@@ -33,17 +33,17 @@ export class HomePage {
 
     this.addForm = this.fb.group({
       plainText: ['', Validators.required],
-      key: ['', [Validators.required, Validators.minLength(4)]]
+      key: ['', [Validators.required, Validators.minLength(4)]],
+      indicator: ['', [Validators.required, Validators.maxLength(4)]]
     });
   }
 
   encrypt(btn) {
     let encryptedAES = CryptoJS.AES.encrypt(this.addForm.value.plainText, this.addForm.value.key);
-    this.addForm.reset();
-
     let storageKey = this.generateKey('_new');
-    this.setObject(storageKey, this.today, '_new', encryptedAES.toString())
+    this.setObject(storageKey, this.today, '_new', encryptedAES.toString(), this.addForm.value.indicator)
       .then(() => {
+        this.addForm.reset();
         this.displayAddForm = true;
         this.showAddForm(btn);
       });
@@ -63,7 +63,7 @@ export class HomePage {
       console.log("access denied animation and border blinking animation 3 times");
     } else {
       this.showMyCard = true;
-      this.setObject(storageKey, this.today, reference, encodedData);
+      this.setObject(storageKey, this.today, reference, encodedData, '');
       let interval = setInterval(() => {
         this.remainingTime--;
         if (this.remainingTime == 0) {
@@ -87,13 +87,14 @@ export class HomePage {
     }
   }
 
-  async setObject(storageKey, time, reference, encodedText) {
+  async setObject(storageKey, time, reference, encodedText, indicator) {
     await Storage.set({
       key: storageKey,
       value: JSON.stringify({
         time: time,
         reference: reference,
-        encodedText: encodedText
+        encodedText: encodedText,
+        indicator: indicator
       })
     }).then(() => {
       if (reference == '_new') this.toast.presentToast('new data successfully created', 3000, 'top', 'toast-success-class', 'checkmark-outline');

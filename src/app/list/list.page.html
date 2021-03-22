@@ -8,27 +8,26 @@
 </ion-header>
 
 <ion-content>
+  <ion-searchbar animated (ionChange)="search($event)"></ion-searchbar>
+  <p class="ion-text-center" *ngIf="searchResultNull">
+    <i>No such patient found</i>
+  </p>
   <ion-list *ngFor="let item of allItem">
     <ion-item-sliding>
       <ion-item>
+        <ion-icon name="document-text-outline" (click)="copy(item)"></ion-icon>
         <ion-label>
           <h2>{{item.time}}</h2>
-          <p>{{item.encodedText}}</p>
+          <p class="ion-text-wrap">{{item.encodedText}}</p>
         </ion-label>
-        <!-- <ion-note slot="end">
-          10:45 AM
-        </ion-note> -->
+        <ion-note>
+          {{item.indicator}}
+        </ion-note>
       </ion-item>
 
-      <ion-item-options side="start">
-        <ion-item-option color="light" (click)="edit(item)">
-          <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
-
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="delete(item)">
-          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        <ion-item-option color="light" (click)="delete(item)">
+          <ion-icon id="trash" slot="icon-only" name="trash-outline"></ion-icon>
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>

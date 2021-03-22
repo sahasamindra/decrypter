@@ -48,6 +48,8 @@
         (ionBlur)="resetBorderColor(input4)"></ion-input>
       <ion-input #input5 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input5)"
         (ionBlur)="resetBorderColor(input5)"></ion-input>
+      <ion-input #input6 formControlName="indicator" placeholder="indicator" type="password" (ionFocus)="setBorderColor(input6)"
+        (ionBlur)="resetBorderColor(input6)"></ion-input>
       <ion-row class="form-submit-button" *ngIf="addForm.valid">
         <ion-col class="ion-text-right">
           <ion-button type="submit" shape="round" color="success">Save</ion-button>

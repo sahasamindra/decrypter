@@ -17,7 +17,7 @@ export class ToastService {
       cssClass: cssClass,
       buttons: [
         {
-          side: 'start',
+          side: 'end',
           icon: icon
         }
       ]

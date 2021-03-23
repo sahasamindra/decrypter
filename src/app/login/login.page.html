@@ -6,17 +6,24 @@
       this is decrypted text: {{decryptedtext}} <br>
       this is original text: {{plaintext}}
     </p> -->
-    <p>
+    <!-- <p>
       remaining immplementation<br>
       1. add biometric library <br>
       2. A downloadable text file of the latest list
-    </p>
-  </div>
-  <div class="image">
-    <img src="assets/logo.svg" width="auto" height="auto">
+    </p> -->
   </div>
 
-  <div class="form">
+  <div class="image" *ngIf="!showForm">
+    <img src="assets/finger.svg" width="auto" height="auto">
+    <ion-button type="button" shape="round" color="warning" expand="block" (click)="usePassword()">Use Password</ion-button>
+  </div>
+
+  <div class="image" *ngIf="showForm">
+    <img src="assets/logo.svg" width="auto" height="auto">
+    <ion-button type="button" shape="round" color="light" expand="block" (click)="useFingerprint()">Fingerprint</ion-button>
+  </div>
+
+  <div class="form" *ngIf="showForm">
     <form [formGroup]="myForm" (ngSubmit)="validateForm()">
       <ion-input #input formControlName="password" placeholder="password" type="password" (ionFocus)="setBorderColor(input)" (ionBlur)="resetBorderColor(input)"></ion-input>
       <ion-button *ngIf="myForm.valid" type="submit" shape="round" color="success" expand="block">Verify</ion-button>

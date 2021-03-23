@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
-import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
-
 
 @Component({
   selector: 'app-login',
@@ -13,47 +11,10 @@ import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
 export class LoginPage implements OnInit {
 
   myForm: FormGroup;
-  constructor(private fb: FormBuilder, private router: Router, private faio: FingerprintAIO) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.myForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(10)]]
     });
-  }
-
-  check() {
-    console.log('check');
-    this.faio.isAvailable().then(result => {
-      console.log(result);
-    }).catch(err => {
-      console.log(err);
-    });
-  }
-
-
-
-  show() {
-    //   console.log('show');
-    //   this.faio.show({
-    //     clientId: 'Fingerprint-Demo',
-    //     clientSecret: 'password', // Only necessary for Android
-    //     disableBackup: true,  // Only for Android(optional)
-    //     localizedFallbackTitle: 'Use Pin', // Only for iOS
-    //     localizedReason: 'Please authenticate' // Only for iOS
-    //   }).then(result => {
-    //     console.log(result);
-    //   }).catch(err => {
-    //     console.log(err);
-    //   });
-
-    this.faio.show({
-      title: 'Biometric Authentication', // (Android Only) | optional | Default: "<APP_NAME> Biometric Sign On"
-      subtitle: 'Coolest Plugin ever', // (Android Only) | optional | Default: null
-    description: 'Please authenticate', // optional | Default: null
-    fallbackButtonTitle: 'Use Backup', // optional | When disableBackup is false defaults to "Use Pin".
-      // When disableBackup is true defaults to "Cancel"
-      disableBackup: true,  // optional | default: false
-    })
-      .then((result: any) => console.log(result))
-      .catch((error: any) => console.log(error));
   }
 
   ngOnInit() {

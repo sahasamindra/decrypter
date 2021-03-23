@@ -16,9 +16,6 @@
     <img src="assets/logo.svg" width="auto" height="auto">
   </div>
 
-  <ion-button *ngIf="myForm.valid" type="button" shape="round" color="success" expand="block" (click)="show()">Verify</ion-button>
-  <ion-button *ngIf="myForm.valid" type="button" shape="round" color="success" expand="block" (click)="check()">Verify</ion-button>
-
   <div class="form">
     <form [formGroup]="myForm" (ngSubmit)="validateForm()">
       <ion-input #input formControlName="password" placeholder="password" type="password" (ionFocus)="setBorderColor(input)" (ionBlur)="resetBorderColor(input)"></ion-input>

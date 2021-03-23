@@ -14,7 +14,7 @@ export class ToastService {
       duration: duration,
       position: position,
       keyboardClose: true,
-      cssClass: cssClass,
+      cssClass: ['custom-toast-class', cssClass],
       buttons: [
         {
           side: 'end',

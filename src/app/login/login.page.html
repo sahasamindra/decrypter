@@ -8,15 +8,16 @@
     </p> -->
     <p>
       remaining immplementation<br>
-      1. change toast icon color<br>
-      2. Alert promt <br>
-      3. add biometric library <br>
-      4. A downloadable text file of the latest list
+      1. add biometric library <br>
+      2. A downloadable text file of the latest list
     </p>
   </div>
   <div class="image">
     <img src="assets/logo.svg" width="auto" height="auto">
   </div>
+
+  <ion-button *ngIf="myForm.valid" type="button" shape="round" color="success" expand="block" (click)="show()">Verify</ion-button>
+  <ion-button *ngIf="myForm.valid" type="button" shape="round" color="success" expand="block" (click)="check()">Verify</ion-button>
 
   <div class="form">
     <form [formGroup]="myForm" (ngSubmit)="validateForm()">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Plugins } from '@capacitor/core';
+import { AlertController } from '@ionic/angular';
 import { ToastService } from '../services/toast.service';
 const { Storage, Clipboard } = Plugins;
 
@@ -14,7 +15,7 @@ export class ListPage implements OnInit {
   backupallItem = [];
   searchResultNull: boolean = false;
 
-  constructor(private toast: ToastService) {
+  constructor(private toast: ToastService, public alertController: AlertController) {
     this.getkeys();
   }
 
@@ -81,13 +82,29 @@ export class ListPage implements OnInit {
       .catch(() => this.toast.presentToast('operation failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
   }
 
-  delete(item) {
-    console.log('alert prompt for delete');
-
-    this.removeItem(item.key).then(() => {
-      this.allItem = [];
-      this.getkeys();
+  async delete(item) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm!',
+      message: '<strong>Are you sure that you want to delete this item ?</strong>!!!',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            this.removeItem(item.key).then(() => {
+              this.allItem = [];
+              this.getkeys();
+            });
+          }
+        }
+      ]
     });
+
+    await alert.present();
   }
 
   async copy(item) {

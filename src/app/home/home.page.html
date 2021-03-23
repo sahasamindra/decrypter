@@ -12,9 +12,9 @@
         (ionBlur)="resetBorderColor(input2)"></ion-input>
       <ion-input #input3 formControlName="reference" placeholder="reference" (ionFocus)="setBorderColor(input3)"
         (ionBlur)="resetBorderColor(input3)"></ion-input>
-      <ion-row class="form-submit-button" *ngIf="myForm.valid">
+      <ion-row class="form-submit-button">
         <ion-col class="ion-text-right">
-          <ion-button type="submit" shape="round" color="success">Decrypt</ion-button>
+          <ion-button *ngIf="myForm.valid" type="submit" shape="round" color="success">Decrypt</ion-button>
         </ion-col>
       </ion-row>
     </form>
@@ -50,9 +50,9 @@
         (ionBlur)="resetBorderColor(input5)"></ion-input>
       <ion-input #input6 formControlName="indicator" placeholder="indicator" type="password" (ionFocus)="setBorderColor(input6)"
         (ionBlur)="resetBorderColor(input6)"></ion-input>
-      <ion-row class="form-submit-button" *ngIf="addForm.valid">
+      <ion-row class="form-submit-button">
         <ion-col class="ion-text-right">
-          <ion-button type="submit" shape="round" color="success">Save</ion-button>
+          <ion-button *ngIf="addForm.valid" type="submit" shape="round" color="success">Save</ion-button>
         </ion-col>
       </ion-row>
     </form>

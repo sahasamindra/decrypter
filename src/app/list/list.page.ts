@@ -78,8 +78,8 @@ export class ListPage implements OnInit {
 
   async removeItem(key) {
     await Storage.remove({ key: key })
-      .then(() => this.toast.presentToast('delete success', 2000, 'top', 'toast-success-class', 'checkmark-outline'))
-      .catch(() => this.toast.presentToast('operation failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
+      .then(() => this.toast.presentToast('Delete success', 2000, 'top', 'toast-success-class', 'checkmark-outline'))
+      .catch(() => this.toast.presentToast('Operation failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
   }
 
   async delete(item) {
@@ -111,8 +111,8 @@ export class ListPage implements OnInit {
     Clipboard.write({
       string: item.encodedText
     })
-      .then(() => this.toast.presentToast('text copied successfully', 2000, 'top', 'toast-success-class', 'document-text-outline'))
-      .catch(() => this.toast.presentToast('unable to copy text', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
+      .then(() => this.toast.presentToast('Text copied successfully', 2000, 'top', 'toast-success-class', 'document-text-outline'))
+      .catch(() => this.toast.presentToast('Unable to copy text', 2000, 'bottom', 'toast-failed-class', 'close-outline'));
 
     // let result = await Clipboard.read();
     // console.log('Got', result.type, 'from clipboard:', result.value);

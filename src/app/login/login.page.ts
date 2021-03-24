@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
+import { ModalController } from '@ionic/angular';
+import { RegisterPage } from '../register/register.page';
+import { ToastService } from '../services/toast.service';
 
-const { BiometricAuth, SplashScreen } = Plugins;
+const { BiometricAuth, SplashScreen, Storage } = Plugins;
 
 @Component({
   selector: 'app-login',
@@ -15,17 +18,16 @@ export class LoginPage implements OnInit {
   myForm: FormGroup;
   showForm: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, public modalController: ModalController, private toast: ToastService) {
     this.myForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(10)]]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   ngOnInit() { }
 
   ionViewDidEnter() {
-    SplashScreen.hide();
-    this.biometricAuthentication();
+    // this.biometricAuthentication();
   }
 
   /* 
@@ -38,9 +40,21 @@ export class LoginPage implements OnInit {
     }});
   */
 
+  async presentRegModal() {
+    const modal = await this.modalController.create({
+      component: RegisterPage
+    });
+    modal.onDidDismiss().then((dataReturned) => {
+      let auth = dataReturned.data;
+      if (auth !== undefined) this.setUser(auth);
+    });
+    return await modal.present();
+  }
+
   async biometricAuthentication() {
     const available = await BiometricAuth.isAvailable();
     if (available.has) {
+      SplashScreen.hide();
       const authResult = await BiometricAuth.verify({
         reson: 'Continue with faceID',
         title: 'Continue with fingerprint'
@@ -48,17 +62,27 @@ export class LoginPage implements OnInit {
 
       if (authResult.verified) this.router.navigate(['/home']);
       else this.showForm = true;
-      
-    } else this.showForm = true;
+    } else {
+      SplashScreen.hide();
+      this.showForm = true;
+    }
   }
 
-  validateForm() {
-    if (this.myForm.value.password == "sahasamindra5546") {
+  async validateUser() {
+    const ret = await Storage.get({ key: 'user-auth-token' });
+    if (this.myForm.value.password == ret.value) {
       this.myForm.reset();
       this.router.navigate(['/home']);
-    } else {
-      console.log("acces denied animation and border blinking animation 3 times");
-    }
+    } else this.toast.presentToast('Authentication failed', 3000, 'bottom', 'toast-failed-class', 'close-outline');
+  }
+
+  async setUser(token) {
+    const ret = await Storage.get({ key: 'user-auth-token' });
+    if (ret.value == null || ret.value == '' || ret.value == undefined) {
+      await Storage.set({ key: 'user-auth-token', value: token })
+        .then(() => this.toast.presentToast('Success! Please remember your password', 3000, 'top', 'toast-success-class', 'checkmark-outline'))
+        .catch(() => this.toast.presentToast('Registration failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
+    } else this.toast.presentToast('User already exist', 3000, 'bottom', 'toast-failed-class', 'close-outline');
   }
 
   setBorderColor(item) {

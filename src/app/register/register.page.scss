@@ -1,0 +1,38 @@
+.form, .image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.image{
+    width: 50%;
+    margin-top: 14vh;
+    // margin-bottom: 10vh;
+}
+
+.form{
+    width: 60%;
+}
+
+.form, ion-button{
+    margin-top: 3vh;
+}
+
+.cancel-btn{
+    height: 60px;
+    width: 60px;
+    --border-radius: 50%;
+}
+
+#input2{
+    margin-top: 2vh;
+    letter-spacing: 3px;
+}
+
+ion-input{
+    text-align: center;
+    border: 2px solid rgb(86, 3, 134);
+    border-radius: 10px;
+    letter-spacing: 5px;
+    font-size: 20px;
+}

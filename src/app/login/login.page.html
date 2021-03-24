@@ -1,17 +1,5 @@
 <!-- <ion-content [fullscreen]="true"> -->
 <ion-content>
-  <div class="form">
-    <!-- <p>
-      this is encrypted text: {{encrytedText}} <br>
-      this is decrypted text: {{decryptedtext}} <br>
-      this is original text: {{plaintext}}
-    </p> -->
-    <!-- <p>
-      remaining immplementation<br>
-      1. add biometric library <br>
-      2. A downloadable text file of the latest list
-    </p> -->
-  </div>
 
   <div class="image" *ngIf="!showForm">
     <img src="assets/finger.svg" width="auto" height="auto">
@@ -20,13 +8,25 @@
 
   <div class="image" *ngIf="showForm">
     <img src="assets/logo.svg" width="auto" height="auto">
-    <ion-button type="button" shape="round" color="light" expand="block" (click)="useFingerprint()">Fingerprint</ion-button>
+    <ion-row class="option-button">
+      <ion-col>
+        <ion-button size="large" color="light" (click)="useFingerprint()">
+          <ion-icon slot="icon-only" name="finger-print-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col class="ion-text-right">
+        <ion-button size="large" color="light" (click)="presentRegModal()">
+          <ion-icon slot="icon-only" name="id-card-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
   </div>
 
   <div class="form" *ngIf="showForm">
-    <form [formGroup]="myForm" (ngSubmit)="validateForm()">
+    <form [formGroup]="myForm" (ngSubmit)="validateUser()">
       <ion-input #input formControlName="password" placeholder="password" type="password" (ionFocus)="setBorderColor(input)" (ionBlur)="resetBorderColor(input)"></ion-input>
       <ion-button *ngIf="myForm.valid" type="submit" shape="round" color="success" expand="block">Verify</ion-button>
     </form>
   </div>
+
 </ion-content>

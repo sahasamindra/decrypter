@@ -97,8 +97,8 @@ export class HomePage {
         indicator: indicator
       })
     }).then(() => {
-      if (reference == '_new') this.toast.presentToast('new data successfully created', 3000, 'top', 'toast-success-class', 'checkmark-outline');
-    }).catch(() => this.toast.presentToast('operation failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
+      if (reference == '_new') this.toast.presentToast('New data successfully created', 3000, 'top', 'toast-success-class', 'checkmark-outline');
+    }).catch(() => this.toast.presentToast('Operation failed', 1000, 'bottom', 'toast-failed-class', 'close-outline'));
   }
 
   generateKey(ref) {

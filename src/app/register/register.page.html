@@ -1,0 +1,23 @@
+<ion-content>
+  <div class="image">
+    <h2>Set your password</h2>
+    <img src="assets/id.svg" width="auto" height="auto">
+    <ion-row class="ion-text-center">
+      <ion-col class="ion-text-center">
+        <ion-button class="cancel-btn" type="button" color="warning" (click)="dismiss()">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div class="form">
+    <form [formGroup]="myRegForm" (ngSubmit)="save()">
+      <ion-input #input1 formControlName="password" placeholder="password" type="password"
+        (ionFocus)="setBorderColor(input1)" (ionBlur)="resetBorderColor(input1)"></ion-input>
+      <ion-input id="input2" #input2 formControlName="cnfPassword" placeholder="confirm password" type="password"
+        (ionFocus)="setBorderColor(input2)" (ionBlur)="resetBorderColor(input2)"></ion-input>
+      <ion-button *ngIf="myRegForm.valid" type="submit" shape="round" color="success" expand="block">Save</ion-button>
+    </form>
+  </div>
+</ion-content>

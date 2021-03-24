@@ -10,7 +10,7 @@
 <ion-content>
   <ion-searchbar animated (ionChange)="search($event)"></ion-searchbar>
   <p class="ion-text-center" *ngIf="searchResultNull">
-    <i>No such patient found</i>
+    <i>No such item found</i>
   </p>
   <ion-list *ngFor="let item of allItem">
     <ion-item-sliding>

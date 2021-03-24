@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Plugins } from '@capacitor/core';
+import { ModalController } from '@ionic/angular';
+import { RegisterPage } from '../register/register.page';
+import { ToastService } from '../services/toast.service';
+
 const { Storage } = Plugins;
 
 @Component({
@@ -8,11 +12,33 @@ const { Storage } = Plugins;
   styleUrls: ['./history.page.scss'],
 })
 export class HistoryPage implements OnInit {
-  
+
   cardElement = [];
 
-  constructor() {
+  constructor(public modalController: ModalController, private toast: ToastService) {
     this.getkeys();
+  }
+
+  async presentRegModal() {
+    const modal = await this.modalController.create({
+      component: RegisterPage
+    });
+    modal.onDidDismiss().then((dataReturned) => {
+      let auth = dataReturned.data;
+      if (auth !== undefined) this.setUser(auth);
+    });
+    return await modal.present();
+  }
+
+  async setUser(token) {
+    // const ret = await Storage.get({ key: 'user-auth-token' });
+    // if (ret.value == null || ret.value == '' || ret.value == undefined) {
+
+    await Storage.set({ key: 'user-auth-token', value: token })
+      .then(() => this.toast.presentToast('Success! Please remember your password', 3000, 'top', 'toast-success-class', 'checkmark-outline'))
+      .catch(() => this.toast.presentToast('Password reset failed', 2000, 'bottom', 'toast-failed-class', 'close-outline'));
+    
+      // } else this.toast.presentToast('User already exist', 3000, 'bottom', 'toast-failed-class', 'close-outline');
   }
 
   ngOnInit() {
@@ -20,8 +46,7 @@ export class HistoryPage implements OnInit {
 
   async getkeys() {
     const { keys } = await Storage.keys();
-    // console.log('Got keys: ', keys);
-    keys.map(key => this.getObject(key));
+    if (keys.length > 1) keys.map(key => this.getObject(key));
   }
 
   async getObject(key) {
@@ -29,7 +54,7 @@ export class HistoryPage implements OnInit {
     const user = JSON.parse(ret.value);
     user.key = key;
     this.cardElement.push(user);
-  
+
     // console.log(this.cardElement);
   }
 }

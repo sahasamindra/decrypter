@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   ionViewDidEnter() {
-    // this.biometricAuthentication();
+    this.biometricAuthentication();
   }
 
   /* 

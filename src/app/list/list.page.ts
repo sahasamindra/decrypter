@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Plugins } from '@capacitor/core';
+import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import { AlertController } from '@ionic/angular';
 import { ToastService } from '../services/toast.service';
-const { Storage, Clipboard } = Plugins;
+
+const { Storage, Clipboard, Filesystem } = Plugins;
 
 @Component({
   selector: 'app-list',
@@ -21,6 +22,21 @@ export class ListPage implements OnInit {
 
   ngOnInit() {
   }
+
+  async fileWrite() {
+    try {
+      const result = await Filesystem.writeFile({
+        path: 'secrets/text.txt',
+        data: "This is a test",
+        directory: FilesystemDirectory.Documents,
+        encoding: FilesystemEncoding.UTF8
+      })
+      console.log('Wrote file', result);
+    } catch(e) {
+      console.error('Unable to write file', e);
+    }
+  }
+  
 
   search(ev) {
     // console.log(ev.detail.value);

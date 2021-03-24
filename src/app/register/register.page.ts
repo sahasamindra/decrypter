@@ -22,7 +22,7 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
 
-  dismiss(pwd) {
+  dismiss(pwd?) {
     this.modalController.dismiss(pwd);
   }
 
@@ -30,7 +30,7 @@ export class RegisterPage implements OnInit {
     if (this.myRegForm.value.password == this.myRegForm.value.cnfPassword) {
       this.dismiss(this.myRegForm.value.password);
       this.myRegForm.reset();
-    } else this.toast.presentToast('Both the password should match', 2000, 'bottom', 'toast-failed-class', 'close-outline')
+    } else this.toast.presentToast('Both password should match', 2000, 'bottom', 'toast-failed-class', 'close-outline')
   }
 
   setBorderColor(item) {

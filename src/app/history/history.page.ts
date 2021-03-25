@@ -50,7 +50,7 @@ export class HistoryPage implements OnInit {
     if (keys.length > 1) {
       let filteredKeyList = [];
       filteredKeyList = keys.filter(key => {
-        return key.substr(-4) == '_log';
+        return key.substr(0, 4) == '_log';
       });
       if (filteredKeyList.length > 0) filteredKeyList.map(key => this.getObject(key));
       else this.noData = true;

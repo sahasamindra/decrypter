@@ -26,10 +26,16 @@ export class ListPage implements OnInit {
   }
 
   async fileWrite() {
+    if (this.backupallItem.length <= 1) return;
+    let fileData = this.backupallItem.map((item, i) => {
+      return ' \n' + (i + 1) + ')' + item.indicator + ' -> ' + item.encodedText;
+    })
+    // console.log(this.backupallItem);
+    // console.log(fileData.toString());
     try {
       const result = await Filesystem.writeFile({
         path: 'info.txt',
-        data: this.backupallItem.toString(),
+        data: fileData.toString(),
         directory: FilesystemDirectory.Documents,
         encoding: FilesystemEncoding.UTF8
       });
@@ -78,12 +84,12 @@ export class ListPage implements OnInit {
 
     let filteredKeyList = [];
     filteredKeyList = keys.filter(key => {
-      return key.substr(-4) == '_new';
+      return key.substr(0, 4) == '_new';
     });
 
     if (filteredKeyList.length > 0) filteredKeyList.map(key => this.getObject(key));
     else this.noData = true;
-    // console.log('filtered keys: ', filteredList);
+    // console.log('filtered keys: ', filteredKeyList);
   }
 
   async getObject(key) {

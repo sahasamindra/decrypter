@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   ionViewDidEnter() {
-    this.biometricAuthentication();
+    this.checkUser();
   }
 
   /* 
@@ -39,6 +39,19 @@ export class LoginPage implements OnInit {
       add(BiometricAuth.class);
     }});
   */
+
+  async checkUser() {
+    const { value } = await Storage.get({ key: 'user-auth-token' });
+    if (value == null) {
+      SplashScreen.hide();
+      this.toast.presentToast('Please register to continue', 3000, 'bottom', 'toast-failed-class', 'person-add-outline')
+      this.presentRegModal();
+    } else {
+      SplashScreen.hide();
+      this.biometricAuthentication();
+    }
+  }
+
 
   async presentRegModal() {
     const modal = await this.modalController.create({
@@ -73,7 +86,7 @@ export class LoginPage implements OnInit {
     if (this.myForm.value.password == ret.value) {
       this.myForm.reset();
       this.router.navigate(['/home']);
-    } else this.toast.presentToast('Authentication failed', 3000, 'bottom', 'toast-failed-class', 'close-outline');
+    } else this.toast.presentToast('Authentication failed', 3000, 'bottom', 'toast-failed-class', 'shield-half-outline');
   }
 
   async setUser(token) {

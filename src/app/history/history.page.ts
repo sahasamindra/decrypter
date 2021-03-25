@@ -14,6 +14,7 @@ const { Storage } = Plugins;
 export class HistoryPage implements OnInit {
 
   cardElement = [];
+  noData: boolean = false;
 
   constructor(public modalController: ModalController, private toast: ToastService) {
     this.getkeys();
@@ -37,8 +38,8 @@ export class HistoryPage implements OnInit {
     await Storage.set({ key: 'user-auth-token', value: token })
       .then(() => this.toast.presentToast('Success! Please remember your password', 3000, 'top', 'toast-success-class', 'checkmark-outline'))
       .catch(() => this.toast.presentToast('Password reset failed', 2000, 'bottom', 'toast-failed-class', 'close-outline'));
-    
-      // } else this.toast.presentToast('User already exist', 3000, 'bottom', 'toast-failed-class', 'close-outline');
+
+    // } else this.toast.presentToast('User already exist', 3000, 'bottom', 'toast-failed-class', 'close-outline');
   }
 
   ngOnInit() {
@@ -46,7 +47,15 @@ export class HistoryPage implements OnInit {
 
   async getkeys() {
     const { keys } = await Storage.keys();
-    if (keys.length > 1) keys.map(key => this.getObject(key));
+    if (keys.length > 1) {
+      let filteredKeyList = [];
+      filteredKeyList = keys.filter(key => {
+        return key.substr(-4) == '_log';
+      });
+      if (filteredKeyList.length > 0) filteredKeyList.map(key => this.getObject(key));
+      else this.noData = true;
+      //  keys.map(key => this.getObject(key));
+    } else this.noData = true;
   }
 
   async getObject(key) {
@@ -54,7 +63,6 @@ export class HistoryPage implements OnInit {
     const user = JSON.parse(ret.value);
     user.key = key;
     this.cardElement.push(user);
-
     // console.log(this.cardElement);
   }
 }

@@ -12,9 +12,11 @@ const { Storage, Clipboard, Filesystem } = Plugins;
 })
 export class ListPage implements OnInit {
 
+  today = '';
   allItem = [];
   backupallItem = [];
   searchResultNull: boolean = false;
+  noData: boolean = false;
 
   constructor(private toast: ToastService, public alertController: AlertController) {
     this.getkeys();
@@ -26,24 +28,25 @@ export class ListPage implements OnInit {
   async fileWrite() {
     try {
       const result = await Filesystem.writeFile({
-        path: 'secrets/text.txt',
-        data: "This is a test",
+        path: 'info.txt',
+        data: this.backupallItem.toString(),
         directory: FilesystemDirectory.Documents,
         encoding: FilesystemEncoding.UTF8
-      })
-      console.log('Wrote file', result);
-    } catch(e) {
+      });
+      this.toast.presentToast('File downloaded successfully', 2000, 'top', 'toast-success-class', 'code-download-outline')
+      // console.log('Wrote file', result);
+    } catch (e) {
+      this.toast.presentToast('Download failed', 3000, 'bottom', 'toast-failed-class', 'close-outline');
       console.error('Unable to write file', e);
     }
   }
-  
+
 
   search(ev) {
     // console.log(ev.detail.value);
     // if(ev.detail.value.trim() == '' || ev.detail.value.trim() == null) console.log('blank');
 
     this.allItem = this.backupallItem;
-
     this.searchResultNull = false;
     let val = ev.detail.value;
 
@@ -78,7 +81,8 @@ export class ListPage implements OnInit {
       return key.substr(-4) == '_new';
     });
 
-    filteredKeyList.map(key => this.getObject(key));
+    if (filteredKeyList.length > 0) filteredKeyList.map(key => this.getObject(key));
+    else this.noData = true;
     // console.log('filtered keys: ', filteredList);
   }
 
@@ -88,13 +92,37 @@ export class ListPage implements OnInit {
     user.key = key;
     this.allItem.push(user);
     this.backupallItem = this.allItem;
-
     // console.log(this.allItem);
   }
 
-  async removeItem(key) {
+  async setObject(storageKey, time, reference, encodedText, indicator) {
+    await Storage.set({
+      key: storageKey,
+      value: JSON.stringify({
+        time: time,
+        reference: reference,
+        encodedText: encodedText,
+        indicator: indicator
+      })
+    }).then(() => {
+      if (reference == null) this.toast.presentToast('New data successfully created', 3000, 'top', 'toast-success-class', 'checkmark-outline');
+    }).catch(() => this.toast.presentToast('Operation failed', 1000, 'bottom', 'toast-failed-class', 'close-outline'));
+  }
+
+  generateKey(ref) {
+    let date = new Date();
+    this.today = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    let key = ref + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds();
+    return key;
+  }
+
+  async removeItem(key, encodedData) {
     await Storage.remove({ key: key })
-      .then(() => this.toast.presentToast('Delete success', 2000, 'top', 'toast-success-class', 'checkmark-outline'))
+      .then(() => {
+        let storageKey = this.generateKey('_log');
+        this.setObject(storageKey, this.today, 'Deleted Data', encodedData, null);
+        this.toast.presentToast('Delete success', 2000, 'top', 'toast-success-class', 'checkmark-outline');
+      })
       .catch(() => this.toast.presentToast('Operation failed', 3000, 'bottom', 'toast-failed-class', 'close-outline'));
   }
 
@@ -111,7 +139,7 @@ export class ListPage implements OnInit {
         }, {
           text: 'Confirm',
           handler: () => {
-            this.removeItem(item.key).then(() => {
+            this.removeItem(item.key, item.encodedText).then(() => {
               this.allItem = [];
               this.getkeys();
             });

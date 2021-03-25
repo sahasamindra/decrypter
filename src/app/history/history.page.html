@@ -13,6 +13,9 @@
 </ion-header>
 
 <ion-content>
+  <p class="ion-text-center" *ngIf="noData">
+    <i>Empty list</i>
+  </p>
   <ion-card *ngFor="let c of cardElement">
     <ion-item>
       <ion-icon name="lock-open-outline" slot="start"></ion-icon>

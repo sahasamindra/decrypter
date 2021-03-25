@@ -41,8 +41,11 @@ export class HomePage {
   encrypt(btn) {
     let encryptedAES = CryptoJS.AES.encrypt(this.addForm.value.plainText, this.addForm.value.key);
     let storageKey = this.generateKey('_new');
-    this.setObject(storageKey, this.today, '_new', encryptedAES.toString(), this.addForm.value.indicator)
+
+    this.setObject(storageKey, this.today, null, encryptedAES.toString(), this.addForm.value.indicator)
       .then(() => {
+        let storageKey = this.generateKey('_log');
+        this.setObject(storageKey, this.today, 'New data', encryptedAES.toString(), null);
         this.addForm.reset();
         this.displayAddForm = true;
         this.showAddForm(btn);
@@ -54,16 +57,16 @@ export class HomePage {
     let encodedData = this.myForm.value.encodedText;
     let myKey = this.myForm.value.key;
     this.myForm.reset();
-    let storageKey = this.generateKey(reference);
+    let storageKey = this.generateKey('_log');
 
     let decryptedBytes = CryptoJS.AES.decrypt(encodedData, myKey);
     this.decodedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 
     if (this.decodedData == '' || this.decodedData == null) {
-      console.log("access denied animation and border blinking animation 3 times");
+      this.toast.presentToast('Wrong key', 2000, 'bottom', 'toast-failed-class', 'shield-half-outline')
     } else {
       this.showMyCard = true;
-      this.setObject(storageKey, this.today, reference, encodedData, '');
+      this.setObject(storageKey, this.today, reference, encodedData, null);
       let interval = setInterval(() => {
         this.remainingTime--;
         if (this.remainingTime == 0) {
@@ -72,18 +75,6 @@ export class HomePage {
           clearInterval(interval);
         }
       }, 1000);
-    }
-  }
-
-  showAddForm(item) {
-    if (this.displayAddForm == false) {
-      this.displayAddForm = true;
-      this.buttonText = 'Cancel'
-      item.el.color = 'danger'
-    } else {
-      this.displayAddForm = false;
-      this.buttonText = 'Add'
-      item.el.color = 'light'
     }
   }
 
@@ -97,17 +88,29 @@ export class HomePage {
         indicator: indicator
       })
     }).then(() => {
-      if (reference == '_new') this.toast.presentToast('New data successfully created', 3000, 'top', 'toast-success-class', 'checkmark-outline');
+      if (reference == null) this.toast.presentToast('New data successfully created', 3000, 'top', 'toast-success-class', 'checkmark-outline');
     }).catch(() => this.toast.presentToast('Operation failed', 1000, 'bottom', 'toast-failed-class', 'close-outline'));
   }
 
   generateKey(ref) {
     let date = new Date();
     this.today = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    let key = date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds();
-    ref = ref.replace(/\s/g, '');
-    key = key + ref.substr(-4);
+    let key = ref + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds();
+    // ref = ref.replace(/\s/g, '');
+    // key = key + ref.substr(-4);
     return key;
+  }
+
+  showAddForm(item) {
+    if (this.displayAddForm == false) {
+      this.displayAddForm = true;
+      this.buttonText = 'Cancel'
+      item.el.color = 'danger'
+    } else {
+      this.displayAddForm = false;
+      this.buttonText = 'Add'
+      item.el.color = 'light'
+    }
   }
 
   setBorderColor(item) {

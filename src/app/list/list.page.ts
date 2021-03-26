@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import { AlertController } from '@ionic/angular';
 import { ToastService } from '../services/toast.service';
+import { Router } from '@angular/router';
+import { HomePage } from '../home/home.page';
+import { ModalController } from '@ionic/angular';
 
 const { Storage, Clipboard, Filesystem } = Plugins;
 
@@ -18,11 +21,30 @@ export class ListPage implements OnInit {
   searchResultNull: boolean = false;
   noData: boolean = false;
 
-  constructor(private toast: ToastService, public alertController: AlertController) {
+  constructor(
+    private toast: ToastService,
+    public alertController: AlertController,
+    private router: Router,
+    public modalController: ModalController) {
     this.getkeys();
   }
 
   ngOnInit() {
+  }
+
+  detail(item){
+    this.router.navigate(['/details']);
+  }
+
+  async presentRegModal() {
+    const modal = await this.modalController.create({
+      component: HomePage
+    });
+    modal.onDidDismiss().then((dataReturned) => {
+      let reload = dataReturned.data;
+      if (reload) this.getkeys();
+    });
+    return await modal.present();
   }
 
   async fileWrite() {
@@ -87,12 +109,16 @@ export class ListPage implements OnInit {
       return key.substr(0, 4) == '_new';
     });
 
-    if (filteredKeyList.length > 0) filteredKeyList.map(key => this.getObject(key));
+    if (filteredKeyList.length > 0) {
+      filteredKeyList.map(key => this.getObject(key));
+      this.noData = false;
+    }
     else this.noData = true;
     // console.log('filtered keys: ', filteredKeyList);
   }
 
   async getObject(key) {
+    this.allItem = [];
     const ret = await Storage.get({ key: key });
     const user = JSON.parse(ret.value);
     user.key = key;
@@ -166,6 +192,10 @@ export class ListPage implements OnInit {
 
     // let result = await Clipboard.read();
     // console.log('Got', result.type, 'from clipboard:', result.value);
+  }
+
+  history() {
+    this.router.navigate(['/history']);
   }
 
 }

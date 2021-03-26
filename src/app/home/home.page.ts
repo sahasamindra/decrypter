@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import CryptoJS from 'crypto-js';
 import { ToastService } from '../services/toast.service';
+import { ModalController } from '@ionic/angular';
+
 const { Storage } = Plugins;
 
 @Component({
@@ -18,18 +20,22 @@ export class HomePage {
   buttonText = 'Add';
   remainingTime = 5;
 
-  showMyCard: boolean = false;
-  displayAddForm: boolean = false;
+  // showMyCard: boolean = false;
+  // displayAddForm: boolean = false;
 
-  myForm: FormGroup;
+  // myForm: FormGroup;
   addForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router, private toast: ToastService) {
-    this.myForm = this.fb.group({
-      encodedText: ['', Validators.required],
-      reference: ['', [Validators.required, Validators.minLength(4)]],
-      key: ['', [Validators.required, Validators.minLength(4)]]
-    });
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router, 
+    public modalController: ModalController,
+    private toast: ToastService) {
+    // this.myForm = this.fb.group({
+    //   encodedText: ['', Validators.required],
+    //   reference: ['', [Validators.required, Validators.minLength(4)]],
+    //   key: ['', [Validators.required, Validators.minLength(4)]]
+    // });
 
     this.addForm = this.fb.group({
       plainText: ['', Validators.required],
@@ -38,7 +44,8 @@ export class HomePage {
     });
   }
 
-  encrypt(btn) {
+  // encrypt(btn) {
+  encrypt() {
     let encryptedAES = CryptoJS.AES.encrypt(this.addForm.value.plainText, this.addForm.value.key);
     let storageKey = this.generateKey('_new');
 
@@ -47,35 +54,40 @@ export class HomePage {
         let storageKey = this.generateKey('_log');
         this.setObject(storageKey, this.today, 'New data', encryptedAES.toString(), null);
         this.addForm.reset();
-        this.displayAddForm = true;
-        this.showAddForm(btn);
+        this.dismiss(true);
+        // this.displayAddForm = true;
+        // this.showAddForm(btn);
       });
   }
 
-  decrypt() {
-    let reference = this.myForm.value.reference;
-    let encodedData = this.myForm.value.encodedText;
-    let myKey = this.myForm.value.key;
-    this.myForm.reset();
-    let storageKey = this.generateKey('_log');
+  // decrypt() {
+  //   let reference = this.myForm.value.reference;
+  //   let encodedData = this.myForm.value.encodedText;
+  //   let myKey = this.myForm.value.key;
+  //   this.myForm.reset();
+  //   let storageKey = this.generateKey('_log');
 
-    let decryptedBytes = CryptoJS.AES.decrypt(encodedData, myKey);
-    this.decodedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
+  //   let decryptedBytes = CryptoJS.AES.decrypt(encodedData, myKey);
+  //   this.decodedData = decryptedBytes.toString(CryptoJS.enc.Utf8);
 
-    if (this.decodedData == '' || this.decodedData == null) {
-      this.toast.presentToast('Wrong key', 2000, 'bottom', 'toast-failed-class', 'shield-half-outline')
-    } else {
-      this.showMyCard = true;
-      this.setObject(storageKey, this.today, reference, encodedData, null);
-      let interval = setInterval(() => {
-        this.remainingTime--;
-        if (this.remainingTime == 0) {
-          this.showMyCard = false;
-          this.remainingTime = 5;
-          clearInterval(interval);
-        }
-      }, 1000);
-    }
+  //   if (this.decodedData == '' || this.decodedData == null) {
+  //     this.toast.presentToast('Wrong key', 2000, 'bottom', 'toast-failed-class', 'shield-half-outline')
+  //   } else {
+  //     this.showMyCard = true;
+  //     this.setObject(storageKey, this.today, reference, encodedData, null);
+  //     let interval = setInterval(() => {
+  //       this.remainingTime--;
+  //       if (this.remainingTime == 0) {
+  //         this.showMyCard = false;
+  //         this.remainingTime = 5;
+  //         clearInterval(interval);
+  //       }
+  //     }, 1000);
+  //   }
+  // }
+
+  dismiss(shouldRealoadList) {
+    this.modalController.dismiss(shouldRealoadList);
   }
 
   async setObject(storageKey, time, reference, encodedText, indicator) {
@@ -101,17 +113,17 @@ export class HomePage {
     return key;
   }
 
-  showAddForm(item) {
-    if (this.displayAddForm == false) {
-      this.displayAddForm = true;
-      this.buttonText = 'Cancel'
-      item.el.color = 'danger'
-    } else {
-      this.displayAddForm = false;
-      this.buttonText = 'Add'
-      item.el.color = 'light'
-    }
-  }
+  // showAddForm(item) {
+  //   if (this.displayAddForm == false) {
+  //     this.displayAddForm = true;
+  //     this.buttonText = 'Cancel'
+  //     item.el.color = 'danger'
+  //   } else {
+  //     this.displayAddForm = false;
+  //     this.buttonText = 'Add'
+  //     item.el.color = 'light'
+  //   }
+  // }
 
   setBorderColor(item) {
     item.el.style.border = "2px solid red";
@@ -123,8 +135,8 @@ export class HomePage {
     item.el.style.boxShadow = "none";
   }
 
-  history() {
-    this.router.navigate(['/history']);
-  }
+  // history() {
+  //   this.router.navigate(['/history']);
+  // }
 
 }

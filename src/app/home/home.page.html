@@ -1,10 +1,32 @@
 <!-- <ion-content [fullscreen]="true"> -->
 <ion-content>
-  <div class="image" (click)="history()">
+  <!-- <div class="image" (click)="history()"> -->
+  <div class="image">
     <img src="assets/lock.svg" width="auto" height="auto">
   </div>
 
   <div class="form">
+    <form [formGroup]="addForm" (ngSubmit)="encrypt(btn)">
+      <ion-input #input4 formControlName="plainText" placeholder="plain text" (ionFocus)="setBorderColor(input4)"
+        (ionBlur)="resetBorderColor(input4)"></ion-input>
+      <ion-input #input5 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input5)"
+        (ionBlur)="resetBorderColor(input5)"></ion-input>
+      <ion-input #input6 formControlName="indicator" placeholder="indicator" type="password"
+        (ionFocus)="setBorderColor(input6)" (ionBlur)="resetBorderColor(input6)"></ion-input>
+      <ion-row class="form-submit-button">
+        <ion-col class="ion-text-left">
+          <ion-button type="button" shape="round" color="warning" (click)="dismiss(false)">Close</ion-button>
+        </ion-col>
+        <ion-col class="ion-text-right">
+          <ion-button *ngIf="addForm.valid" type="submit" shape="round" color="success">
+            <ion-icon slot="icon-only" name="document-attach-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+
+  <!-- <div class="form">
     <form [formGroup]="myForm" (ngSubmit)="decrypt()">
       <ion-input #input1 formControlName="encodedText" placeholder="encoded hash" (ionFocus)="setBorderColor(input1)"
         (ionBlur)="resetBorderColor(input1)"></ion-input>
@@ -18,7 +40,7 @@
         </ion-col>
       </ion-row>
     </form>
-  </div>
+  </div> -->
 
   <ion-card *ngIf="showMyCard">
     <ion-img src="assets/binary.svg"></ion-img>
@@ -32,29 +54,14 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-row class="option-button">
+  <!-- <ion-row class="option-button">
     <ion-col>
-      <ion-button #btn type="button" expand="block" color="success" color="light" (click)="showAddForm(btn)">{{buttonText}}
+      <ion-button #btn type="button" expand="block" color="success" color="light" (click)="showAddForm(btn)">
+        {{buttonText}}
       </ion-button>
     </ion-col>
     <ion-col class="ion-text-right">
       <ion-button type="button" expand="block" color="success" color="light" [routerLink]="['/list']">View</ion-button>
     </ion-col>
-  </ion-row>
-
-  <div class="form" *ngIf="displayAddForm">
-    <form [formGroup]="addForm" (ngSubmit)="encrypt(btn)">
-      <ion-input #input4 formControlName="plainText" placeholder="plain text" (ionFocus)="setBorderColor(input4)"
-        (ionBlur)="resetBorderColor(input4)"></ion-input>
-      <ion-input #input5 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input5)"
-        (ionBlur)="resetBorderColor(input5)"></ion-input>
-      <ion-input #input6 formControlName="indicator" placeholder="indicator" type="password" (ionFocus)="setBorderColor(input6)"
-        (ionBlur)="resetBorderColor(input6)"></ion-input>
-      <ion-row class="form-submit-button">
-        <ion-col class="ion-text-right">
-          <ion-button *ngIf="addForm.valid" type="submit" shape="round" color="success">Save</ion-button>
-        </ion-col>
-      </ion-row>
-    </form>
-  </div>
+  </ion-row> -->
 </ion-content>

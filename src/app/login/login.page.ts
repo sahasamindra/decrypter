@@ -18,7 +18,11 @@ export class LoginPage implements OnInit {
   myForm: FormGroup;
   showForm: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router, public modalController: ModalController, private toast: ToastService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    public modalController: ModalController,
+    private toast: ToastService) {
     this.myForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
@@ -52,7 +56,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-
   async presentRegModal() {
     const modal = await this.modalController.create({
       component: RegisterPage
@@ -73,7 +76,8 @@ export class LoginPage implements OnInit {
         title: 'Continue with fingerprint'
       });
 
-      if (authResult.verified) this.router.navigate(['/home']);
+      // if (authResult.verified) this.router.navigate(['/home']);
+      if (authResult.verified) this.router.navigate(['/list']);
       else this.showForm = true;
     } else {
       SplashScreen.hide();
@@ -85,7 +89,8 @@ export class LoginPage implements OnInit {
     const ret = await Storage.get({ key: 'user-auth-token' });
     if (this.myForm.value.password == ret.value) {
       this.myForm.reset();
-      this.router.navigate(['/home']);
+      // this.router.navigate(['/home']);
+      this.router.navigate(['/list']);
     } else this.toast.presentToast('Authentication failed', 3000, 'bottom', 'toast-failed-class', 'shield-half-outline');
   }
 

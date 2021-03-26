@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import CryptoJS from 'crypto-js';
 import { ToastService } from '../services/toast.service';
@@ -16,9 +16,9 @@ const { Storage } = Plugins;
 export class HomePage {
 
   today = '';
-  decodedData = '';
-  buttonText = 'Add';
-  remainingTime = 5;
+  // decodedData = '';
+  // buttonText = 'Add';
+  // remainingTime = 5;
 
   // showMyCard: boolean = false;
   // displayAddForm: boolean = false;
@@ -28,7 +28,7 @@ export class HomePage {
 
   constructor(
     private fb: FormBuilder, 
-    private router: Router, 
+    // private router: Router, 
     public modalController: ModalController,
     private toast: ToastService) {
     // this.myForm = this.fb.group({

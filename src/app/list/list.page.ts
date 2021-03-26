@@ -1,3 +1,4 @@
+import { DataDetailService } from './../services/data/data-detail.service';
 import { Component, OnInit } from '@angular/core';
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import { AlertController } from '@ionic/angular';
@@ -6,7 +7,7 @@ import { Router } from '@angular/router';
 import { HomePage } from '../home/home.page';
 import { ModalController } from '@ionic/angular';
 
-const { Storage, Clipboard, Filesystem } = Plugins;
+const { Storage, Filesystem } = Plugins;
 
 @Component({
   selector: 'app-list',
@@ -25,6 +26,7 @@ export class ListPage implements OnInit {
     private toast: ToastService,
     public alertController: AlertController,
     private router: Router,
+    private dataService: DataDetailService,
     public modalController: ModalController) {
     this.getkeys();
   }
@@ -32,8 +34,9 @@ export class ListPage implements OnInit {
   ngOnInit() {
   }
 
-  detail(item){
-    this.router.navigate(['/details']);
+  detail(item) {
+    this.dataService.setData(item.indicator, item);
+    this.router.navigateByUrl('details/' + item.indicator);
   }
 
   async presentRegModal() {
@@ -48,12 +51,12 @@ export class ListPage implements OnInit {
   }
 
   async fileWrite() {
-    if (this.backupallItem.length <= 1) return;
+    if (this.backupallItem.length == 0) return;
     let fileData = this.backupallItem.map((item, i) => {
       return ' \n' + (i + 1) + ')' + item.indicator + ' -> ' + item.encodedText;
     })
-    // console.log(this.backupallItem);
-    // console.log(fileData.toString());
+    console.log(this.backupallItem);
+    console.log(fileData.toString());
     try {
       const result = await Filesystem.writeFile({
         path: 'info.txt',
@@ -127,6 +130,10 @@ export class ListPage implements OnInit {
     // console.log(this.allItem);
   }
 
+  async clear() {
+    await Storage.clear();
+  }
+
   async setObject(storageKey, time, reference, encodedText, indicator) {
     await Storage.set({
       key: storageKey,
@@ -183,16 +190,16 @@ export class ListPage implements OnInit {
     await alert.present();
   }
 
-  async copy(item) {
-    Clipboard.write({
-      string: item.encodedText
-    })
-      .then(() => this.toast.presentToast('Text copied successfully', 2000, 'top', 'toast-success-class', 'document-text-outline'))
-      .catch(() => this.toast.presentToast('Unable to copy text', 2000, 'bottom', 'toast-failed-class', 'close-outline'));
+  // async copy(item) {
+  //   Clipboard.write({
+  //     string: item.encodedText
+  //   })
+  //     .then(() => this.toast.presentToast('Text copied successfully', 2000, 'top', 'toast-success-class', 'document-text-outline'))
+  //     .catch(() => this.toast.presentToast('Unable to copy text', 2000, 'bottom', 'toast-failed-class', 'close-outline'));
 
-    // let result = await Clipboard.read();
-    // console.log('Got', result.type, 'from clipboard:', result.value);
-  }
+  //   // let result = await Clipboard.read();
+  //   // console.log('Got', result.type, 'from clipboard:', result.value);
+  // }
 
   history() {
     this.router.navigate(['/history']);

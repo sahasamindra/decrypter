@@ -6,7 +6,8 @@
   </div>
 
   <div class="form">
-    <form [formGroup]="addForm" (ngSubmit)="encrypt(btn)">
+    <!-- <form [formGroup]="addForm" (ngSubmit)="encrypt(btn)"> -->
+    <form [formGroup]="addForm" (ngSubmit)="encrypt()">
       <ion-input #input4 formControlName="plainText" placeholder="plain text" (ionFocus)="setBorderColor(input4)"
         (ionBlur)="resetBorderColor(input4)"></ion-input>
       <ion-input #input5 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input5)"
@@ -42,7 +43,7 @@
     </form>
   </div> -->
 
-  <ion-card *ngIf="showMyCard">
+  <!-- <ion-card *ngIf="showMyCard">
     <ion-img src="assets/binary.svg"></ion-img>
     <ion-card-header>
       <ion-card-title>{{remainingTime}}</ion-card-title>
@@ -52,7 +53,7 @@
       Following item has been found based on your data: <br>
       <h2>{{decodedData}}</h2>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
   <!-- <ion-row class="option-button">
     <ion-col>

@@ -1,3 +1,4 @@
+import { DataResolverService } from 'src/app/services/data/data-resolver.service';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -18,7 +19,8 @@ const routes: Routes = [
   {
     path: 'history',
     loadChildren: () => import('./history/history.module').then(m => m.HistoryPageModule)
-  },  {
+  },
+  {
     path: 'list',
     loadChildren: () => import('./list/list.module').then( m => m.ListPageModule)
   },
@@ -28,6 +30,13 @@ const routes: Routes = [
   },
   {
     path: 'details',
+    loadChildren: () => import('./details/details.module').then( m => m.DetailsPageModule)
+  },
+  {
+    path: 'details/:id',
+    resolve: {
+      special: DataResolverService
+    },
     loadChildren: () => import('./details/details.module').then( m => m.DetailsPageModule)
   },
 

@@ -1,0 +1,41 @@
+.image, .form, ion-img, ion-card{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .option-button{
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .form, .option-button, ion-card{
+    margin-top: 5vh;
+    width: 80%;
+  }
+  
+  ion-img{
+    margin-top: 2vh;
+    width: 40%;
+    height: auto;
+  }
+  
+  .image{
+    margin-top: 12vh;
+    width: 30%;
+  }
+  
+  .form-submit-button{
+    margin-top: 15px;
+  }
+  
+  ion-input{
+    margin-top: 10px;
+    text-align: center;
+    border: 1px solid rgb(86, 3, 134);
+    border-radius: 10px;
+    letter-spacing: 5px;
+    font-size: 20px;
+    // font-weight: bold;
+    // box-shadow: 0.3px 0.3px 20px 2px red;
+  }

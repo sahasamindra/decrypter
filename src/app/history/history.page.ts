@@ -62,6 +62,9 @@ export class HistoryPage implements OnInit {
     const ret = await Storage.get({ key: key });
     const user = JSON.parse(ret.value);
     user.key = key;
+    if (user.reference.substr(0, 3) == 'New') user.icon = "document-attach-outline";
+    else if (user.reference.substr(0, 3) == 'Del') user.icon = "trash-outline";
+    else user.icon = "lock-open-outline";
     this.cardElement.push(user);
     // console.log(this.cardElement);
   }

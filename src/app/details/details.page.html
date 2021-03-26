@@ -8,5 +8,35 @@
 </ion-header>
 
 <ion-content>
+  <div class="image">
+    <img src="assets/binary.svg" width="auto" height="auto">
+  </div>
 
+  <div class="form">
+    <form [formGroup]="myForm" (ngSubmit)="decrypt()">
+      <ion-input #input1 formControlName="encodedText" placeholder="encoded hash" (ionFocus)="setBorderColor(input1)"
+        (ionBlur)="resetBorderColor(input1)"></ion-input>
+      <ion-input #input2 formControlName="key" placeholder="key" type="password" (ionFocus)="setBorderColor(input2)"
+        (ionBlur)="resetBorderColor(input2)"></ion-input>
+      <ion-input #input3 formControlName="reference" placeholder="reference" (ionFocus)="setBorderColor(input3)"
+        (ionBlur)="resetBorderColor(input3)"></ion-input>
+      <ion-row class="form-submit-button">
+        <ion-col class="ion-text-right">
+          <ion-button *ngIf="myForm.valid" type="submit" shape="round" color="success">Decrypt</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+
+  <ion-card *ngIf="showMyCard">
+    <ion-img src="assets/document.svg"></ion-img>
+    <ion-card-header>
+      <ion-card-title>{{remainingTime}}</ion-card-title>
+      <ion-card-subtitle>{{today}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      Following item has been found based on your data: <br>
+      <h2>{{decodedData}}</h2>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

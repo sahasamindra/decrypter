@@ -94,6 +94,7 @@ export class DetailsPage implements OnInit {
           this.showMyCard = false;
           this.remainingTime = 5;
           clearInterval(interval);
+          this.router.navigate(['/list']);
         }
       }, 1000);
     }

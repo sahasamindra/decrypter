@@ -131,7 +131,26 @@ export class ListPage implements OnInit {
   }
 
   async clear() {
-    await Storage.clear();
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'App reset!',
+      message: '<strong>You are about to erase all data in this application, continue?</strong>',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            Storage.clear();
+            this.allItem = [];
+            this.router.navigate(['']);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async setObject(storageKey, time, reference, encodedText, indicator) {
@@ -169,7 +188,7 @@ export class ListPage implements OnInit {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirm!',
-      message: '<strong>Are you sure that you want to delete this item ?</strong>!!!',
+      message: '<strong>Are you sure that you want to delete this item?</strong>',
       buttons: [
         {
           text: 'Cancel',

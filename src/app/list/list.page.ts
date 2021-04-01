@@ -132,16 +132,16 @@ export class ListPage implements OnInit {
 
   async clear() {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
+      // cssClass: 'alert-confirm-button',
       header: 'App reset!',
       message: '<strong>You are about to erase all data in this application, continue?</strong>',
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary'
+          role: 'cancel'
         }, {
           text: 'Confirm',
+          cssClass: 'alert-confirm-button',
           handler: () => {
             Storage.clear();
             this.allItem = [];
@@ -186,16 +186,16 @@ export class ListPage implements OnInit {
 
   async delete(item) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
+      // cssClass: 'alert-confirm-button',
       header: 'Confirm!',
       message: '<strong>Are you sure that you want to delete this item?</strong>',
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary'
+          role: 'cancel'
         }, {
           text: 'Confirm',
+          cssClass: 'alert-confirm-button',
           handler: () => {
             this.removeItem(item.key, item.encodedText).then(() => {
               this.allItem = [];

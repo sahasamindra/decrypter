@@ -1,9 +1,15 @@
 <!-- <ion-content [fullscreen]="true"> -->
 <ion-content>
 
+  <!-- <ion-item lines="none">
+    <ion-icon name={{iconName}} slot="end"></ion-icon>
+    <ion-toggle (ionChange)="toggleTheme($event)" slot="end"></ion-toggle>
+  </ion-item> -->
+
   <div class="image" *ngIf="!showForm">
     <img src="assets/finger.svg" width="auto" height="auto">
-    <ion-button type="button" shape="round" color="warning" expand="block" (click)="usePassword()">Use Password</ion-button>
+    <ion-button type="button" shape="round" color="warning" expand="block" (click)="usePassword()">Use Password
+    </ion-button>
   </div>
 
   <div class="image" *ngIf="showForm">
@@ -24,7 +30,8 @@
 
   <div class="form" *ngIf="showForm">
     <form [formGroup]="myForm" (ngSubmit)="validateUser()">
-      <ion-input #input formControlName="password" placeholder="password" type="password" (ionFocus)="setBorderColor(input)" (ionBlur)="resetBorderColor(input)"></ion-input>
+      <ion-input #input formControlName="password" placeholder="password" type="password"
+        (ionFocus)="setBorderColor(input)" (ionBlur)="resetBorderColor(input)"></ion-input>
       <ion-button *ngIf="myForm.valid" type="submit" shape="round" color="success" expand="block">Verify</ion-button>
     </form>
   </div>

@@ -17,6 +17,7 @@ export class LoginPage implements OnInit {
 
   myForm: FormGroup;
   showForm: boolean = false;
+  iconName = 'sunny-outline';
 
   constructor(
     private fb: FormBuilder,
@@ -43,6 +44,17 @@ export class LoginPage implements OnInit {
       add(BiometricAuth.class);
     }});
   */
+
+  // toggleTheme(ev) {
+  //   if (ev.detail.checked) {
+  //     document.body.setAttribute('color-theme', 'dark');
+  //     this.iconName = 'moon-outline';
+  //   } else {
+  //     // document.body.setAttribute('color-theme', 'light');
+  //     document.body.removeAttribute('color-theme');
+  //     this.iconName = 'sunny-outline';
+  //   }
+  // }
 
   async checkUser() {
     const { value } = await Storage.get({ key: 'user-auth-token' });

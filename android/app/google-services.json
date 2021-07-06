@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "623310085246",
+    "project_id": "decrypter-175f3",
+    "storage_bucket": "decrypter-175f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623310085246:android:7ddbc10b1eb9373d438c2f",
+        "android_client_info": {
+          "package_name": "com.samindra.decrypter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623310085246-8sagc32u2j82tfan45r3nqbfe9su7dsd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKocPYP-5fzy5Bj8ygtsr4zRt9wlc6Vp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623310085246-8sagc32u2j82tfan45r3nqbfe9su7dsd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,8 +5,10 @@ import { Plugins } from '@capacitor/core';
 import { ModalController } from '@ionic/angular';
 import { RegisterPage } from '../register/register.page';
 import { ToastService } from '../services/toast.service';
+import '@capacitor-community/camera-preview'
+import { CameraPreviewOptions, CameraPreviewPictureOptions } from '@capacitor-community/camera-preview';
 
-const { BiometricAuth, SplashScreen, Storage } = Plugins;
+const { BiometricAuth, SplashScreen, Storage, CameraPreview } = Plugins;
 
 @Component({
   selector: 'app-login',
@@ -16,8 +18,11 @@ const { BiometricAuth, SplashScreen, Storage } = Plugins;
 export class LoginPage implements OnInit {
 
   myForm: FormGroup;
-  showForm: boolean = false;
+  showForm: boolean;
   iconName = 'sunny-outline';
+
+  image = null;
+  cameraActive = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,11 +34,37 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() { }
-
-  ionViewDidEnter() {
+  ngOnInit() {
     this.checkUser();
   }
+
+  async openCamera() {
+    const cameraPreviewOptions: CameraPreviewOptions = {
+      position: 'rear',
+      parent: 'cameraPreview',
+      className: 'cameraPreview'
+    };
+
+    await CameraPreview.start(cameraPreviewOptions);
+    this.cameraActive = true;
+  }
+
+  async stopCamera() {
+    await CameraPreview.stop();
+    this.cameraActive = false;
+  }
+
+  async captureImage() {
+    const camrePreviewPicruteOption: CameraPreviewPictureOptions = {
+      quality: 50
+    }
+    const result = await CameraPreview.capture(camrePreviewPicruteOption);
+    // console.log(result);
+    this.image = `data:image/jpeg;base64,${result.value}`;
+    this.stopCamera();
+    console.log(this.image);
+  }
+
 
   /* 
   android/variable.gradel 
@@ -45,16 +76,16 @@ export class LoginPage implements OnInit {
     }});
   */
 
-  // toggleTheme(ev) {
-  //   if (ev.detail.checked) {
-  //     document.body.setAttribute('color-theme', 'dark');
-  //     this.iconName = 'moon-outline';
-  //   } else {
-  //     // document.body.setAttribute('color-theme', 'light');
-  //     document.body.removeAttribute('color-theme');
-  //     this.iconName = 'sunny-outline';
-  //   }
-  // }
+  toggleTheme(ev) {
+    if (ev.detail.checked) {
+      document.body.setAttribute('color-theme', 'dark');
+      this.iconName = 'moon-outline';
+    } else {
+      // document.body.setAttribute('color-theme', 'light');
+      document.body.removeAttribute('color-theme');
+      this.iconName = 'sunny-outline';
+    }
+  }
 
   async checkUser() {
     const { value } = await Storage.get({ key: 'user-auth-token' });
@@ -63,7 +94,7 @@ export class LoginPage implements OnInit {
       this.toast.presentToast('Please register to continue', 3000, 'bottom', 'toast-failed-class', 'person-add-outline')
       this.presentRegModal();
     } else {
-      SplashScreen.hide();
+      this.showForm = false;
       this.biometricAuthentication();
     }
   }

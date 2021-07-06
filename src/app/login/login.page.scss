@@ -1,3 +1,29 @@
+ion-content{
+    --background: transparent !important;
+}
+
+.cameraPreview{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+#capture{
+    z-index: 11;
+}
+
+#close{
+    z-index: 11;
+}
+
+
+
+
+
+
+
+
 .form, .image{
     display: block;
     margin-left: auto;
